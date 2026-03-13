@@ -6,7 +6,7 @@ on:
       agent_name:
         description: 'adiyaman'
         required: true
-        default: 'finder'
+        default: 'adiyaman'
       agent_description:
         description: 'adiyaman'
         required: true
