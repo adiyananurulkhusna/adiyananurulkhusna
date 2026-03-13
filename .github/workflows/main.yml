@@ -4,43 +4,38 @@ on:
   workflow_dispatch:
     inputs:
       agent_name:
-        description: "Agent Name"
+        description: 'adiyaman'
         required: true
-        default: "adiyaman"
+        default: 'adiyaman'
       agent_description:
-        description: "Agent Description"
+        description: 'adiyaman'
         required: true
-        default: "adiyaman AI Agent"
+        default: 'adiyaman AI Agent'
 
 jobs:
   verify:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Checkout repo
+        uses: actions/checkout@v3
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v3
         with:
-          node-version: "20"
-          cache: "npm"
+          node-version: '20'
 
-      - name: Install ClawHub skill
+      - name: Step 1 - Install ClawHub skill
         run: npx clawhub@latest install verified-agent-identity
 
-      - name: Install dependencies
+      - name: Install script dependencies
         run: |
-          if [ -d "scripts" ]; then
-            cd scripts
-            npm install
-          else
-            echo "Folder scripts tidak ditemukan"
-            exit 1
-          fi
+          cd scripts
+          npm install
 
-      - name: Create Ethereum Identity
+      - name: Step 2 - Create new Ethereum Identity
+        run: node scripts/createNewEthereumIdentity.js
+
+      - name: Step 3 - Link Human to Agent
         run: |
-          if [ -f "scripts/createNewEthereumIdentity.js" ]; then
-            node scripts/createNewEthereumIdentity.js
-          else
+          node scripts/manualLinkHumanToAgent.js --challenge '{"name": "adiyaman", "description": "adiyaman AI Agent"}'
